@@ -16,7 +16,7 @@ export default {
   title: "Home",
   description: "Irish-owned pubs in Louisville's Highlands and Covington's historic 1888 Hermes Building. Fish & chips, Reubens, perfect pints of Guinness, live trad and bluegrass, every match on the big screens.",
   preload: ["/assets/img/bar-interior-dark-1280.webp"],
-  scripts: [`<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>`, `<script type="module" src="/assets/js/pint.js"></script>`],
+  scripts: [`<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>`, `<script type="module" src="/assets/js/pour.js"></script>`],
   body: () => `
 <section class="hero grain" aria-label="Welcome to Molly Malone's" data-hero>
   <div class="hero__media" aria-hidden="true">
@@ -93,30 +93,56 @@ export default {
   </div>
 </section>
 
-<section class="section bar" aria-labelledby="bar-title">
-  <div class="wrap bar__grid">
-    <div class="bar__stage" data-pint-stage>
-      <div class="bar__glow" aria-hidden="true"></div>
-      <div class="bar__fallback">${media("lou-guinness-bar", "A pint of Guinness settling on the bar", { sizes: "(max-width: 900px) 100vw, 50vw", style: "height:100%" })}</div>
+<section class="pour" aria-labelledby="pour-title" data-pour>
+  <div class="pour__sticky">
+    <div class="pour__stage" data-pour-stage aria-hidden="true">
+      <svg class="pour__svg" data-pour-svg role="presentation" focusable="false"></svg>
     </div>
-    <div class="bar__copy">
-      <p class="eyebrow" data-reveal>No. 03 — The Bar</p>
-      <h2 id="bar-title" class="h1" data-reveal-lines>${splitLines(["Poured with", "<em>patience.</em>"])}</h2>
-      <p class="lede mt-2" data-reveal>Two-part pours, settled properly. Irish stouts, ales and cider on draft, Jameson on tap, and a whiskey shelf that rewards the curious.</p>
-      <ul class="taps" data-reveal>
-        <li>Guinness <small>Draught</small></li>
-        <li>Harp <small>Lager</small></li>
-        <li>Smithwick's <small>Ale</small></li>
-        <li>Kilkenny <small>Cream Ale</small></li>
-        <li>Magners <small>Cider</small></li>
-        <li>Jameson <small>On draft</small></li>
-      </ul>
-      <div class="whiskey-shelf" data-reveal>
-        <h3>From the top shelf</h3>
-        <ul>${whiskeys.map((w) => `<li>${w}</li>`).join("")}</ul>
+    <div class="pour__poster">${media("lou-guinness-bar", "A pint of Guinness settling on the bar", { sizes: "(max-width: 900px) 100vw, 50vw" })}</div>
+    <div class="pour__veil" aria-hidden="true"></div>
+    <div class="pour__gauge" aria-hidden="true">
+      <span class="pour__track"><i data-pour-gauge></i></span>
+      <b data-pour-pct>0%</b>
+      <small>The pour</small>
+    </div>
+    <div class="pour__copy">
+      <div class="pour__step is-active" data-step="0">
+        <p class="eyebrow">No. 03 — The Bar</p>
+        <h2 id="pour-title" class="h1">It begins with<br><em>a clean glass.</em></h2>
+        <p class="lede">Rinsed, cold, held at forty-five degrees beneath the tap. Scroll to pour.</p>
+        <span class="pour__hint" aria-hidden="true"><i></i>Scroll</span>
       </div>
-      <a class="link mt-2" href="/menu/?menu=drinks">Explore drinks ${arrow}</a>
+      <div class="pour__step" data-step="1" inert>
+        <p class="eyebrow">The first pour</p>
+        <p class="h1 pour__title">Steady, down<br><em>the side.</em></p>
+        <p class="lede">Three-quarters full, nice and slow. Guinness on draft at both pubs — alongside Harp, Smithwick's, Kilkenny and Magners.</p>
+      </div>
+      <div class="pour__step" data-step="2" inert>
+        <p class="eyebrow">The surge</p>
+        <p class="h1 pour__title">Tan to black,<br><em>bottom to top.</em></p>
+        <p class="lede">Watch the cascade roll down the glass as the stout settles. Good things take a little time — every bartender here will tell you.</p>
+      </div>
+      <div class="pour__step" data-step="3" inert>
+        <p class="eyebrow">The top-up</p>
+        <p class="h1 pour__title">Poured with<br><em>patience.</em></p>
+        <ul class="taps">
+          <li>Guinness <small>Draught</small></li>
+          <li>Harp <small>Lager</small></li>
+          <li>Smithwick's <small>Ale</small></li>
+          <li>Kilkenny <small>Cream Ale</small></li>
+          <li>Magners <small>Cider</small></li>
+          <li>Jameson <small>On draft</small></li>
+        </ul>
+        <a class="link" href="/menu/?menu=drinks">Explore drinks ${arrow}</a>
+      </div>
     </div>
+  </div>
+</section>
+
+<section class="section--tight whiskey-band" aria-labelledby="shelf-title">
+  <div class="wrap whiskey-shelf">
+    <h3 id="shelf-title" data-reveal>And from the top shelf</h3>
+    <ul data-reveal>${whiskeys.map((w) => `<li>${w}</li>`).join("")}</ul>
   </div>
 </section>
 

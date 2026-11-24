@@ -31,14 +31,20 @@ src/pages/*.mjs        one module per page
 src/data/*.json        business content (verified against mollymalonesirishpub.com, Nov 2026)
 assets/css/main.css    design system (oak · emerald · burgundy · brass · ivory)
 assets/js/main.js      interactions: reveals, parallax, menus, events, forms, open-now
-assets/js/pint.js      Three.js stout pint (lazy-loaded, falls back to a photo)
+assets/js/pour.js      The Pour: scroll-linked controller + illustrated SVG pint fallback
+assets/js/pour-gl.js   The Pour: WebGL scene (three.js, lazy-loaded)
+assets/js/pour-shape.js  shared glass profile and the scroll → pour timeline
 assets/img/            WebP at 640 / 1280 / 1920 widths
 ```
 
 ## Performance notes
 
 - Every image is WebP with `srcset`/`sizes`, explicit dimensions and lazy loading. Only the hero image is preloaded.
-- Three.js is only requested when the bar section nears the viewport. It is skipped on low-power and Save-Data devices, and it pauses when off screen.
+- **The Pour** (homepage, section 03): the stout's level is set directly by scroll position through a pinned section — 0% empty, 25% the pour begins, 50% half full, 75% nearly full with the head forming, 100% settled under a domed head. Scrolling back up drains it. The keyframes live in `pourState()` in `assets/js/pour-shape.js`.
+  - WebGL scene: transmissive glass with refraction, thickness, dispersion and handling smudges; stout with a tan nitrogen cascade that settles to black and a ruby backlit edge; micro-bubble foam that tilts, clings to the glass and domes; studio softbox reflections; a warm pool of back light on a polished oak bar.
+  - three.js loads only when the section is within ~1200px. It is skipped for Save-Data, 2G, devices with under 3GB of memory, or no WebGL2. It drops to 1× resolution, then to the SVG pint, if the device can't hold ~30fps. It renders only while on screen.
+  - The SVG pint fills from the same timeline. It shows instantly while WebGL loads, and it is the permanent fallback. Add `?pour=2d` to the URL to preview it.
+  - Reduced motion: the fill still follows scroll, but the slosh, cascade and bokeh flicker are frozen.
 - Google Maps loads only when the visitor asks for it.
 - Pages use cross-document View Transitions, and the site respects `prefers-reduced-motion`.
 

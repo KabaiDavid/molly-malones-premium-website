@@ -366,14 +366,6 @@ body.menu-open { overflow: hidden; }
 /* ==========================================================================
    HOME — The Bar (3D pint)
    ========================================================================== */
-.bar { overflow: hidden; }
-.bar__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 3rem); align-items: center; }
-.bar__stage { grid-column: 1 / span 6; position: relative; aspect-ratio: 4 / 5; max-height: 86svh; }
-.bar__stage canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
-.bar__stage .bar__fallback { position: absolute; inset: 0; transition: opacity 1.2s var(--ease); }
-.bar__stage.has-3d .bar__fallback { opacity: 0; }
-.bar__glow { position: absolute; inset: 10% 5%; background: radial-gradient(closest-side, rgba(224,162,82,.35), transparent 70%); filter: blur(30px); pointer-events: none; }
-.bar__copy { grid-column: 8 / span 5; }
 .taps { list-style: none; padding: 0; margin: 2rem 0; columns: 2; column-gap: 2rem; }
 .taps li { break-inside: avoid; padding: .7rem 0; border-bottom: 1px solid var(--line); font-family: var(--font-display); font-size: var(--step-1); display: flex; justify-content: space-between; gap: 1rem; }
 .taps li small { font-family: var(--font-sans); font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); align-self: center; }
@@ -381,11 +373,76 @@ body.menu-open { overflow: hidden; }
 .whiskey-shelf h3 { font-size: var(--step-1); font-style: italic; color: var(--fg-muted); margin-bottom: 1rem; }
 .whiskey-shelf ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
 .whiskey-shelf li { border: 1px solid var(--line); padding: .45rem .9rem; border-radius: 99px; font-size: .82rem; color: var(--ivory-300); }
-@media (max-width: 900px) {
-  .bar__stage { grid-column: 1 / -1; max-height: 70svh; width: 100%; max-width: 520px; margin-inline: auto; }
-  .bar__copy { grid-column: 1 / -1; }
-}
 @media (max-width: 480px) { .taps { columns: 1; } }
+
+/* ==========================================================================
+   HOME — The Pour (scroll-linked stout fill)
+   ========================================================================== */
+.pour { position: relative; background: #0b0806; color: var(--ivory-100); }
+.js .pour { height: 440vh; }
+.pour__sticky { position: relative; padding: 6rem var(--gutter); }
+.js .pour__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; padding: 0; }
+.pour__stage { position: absolute; inset: 0; display: none; }
+.js .pour__stage { display: block; }
+.pour__canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; opacity: 0; transition: opacity 1.4s var(--ease); }
+.pour__stage.is-3d .pour__canvas { opacity: 1; }
+.pour__svg { position: absolute; left: 35%; top: 50%; height: 80%; width: auto; aspect-ratio: 220 / 390; transform: translate(-50%, -50%); transition: opacity 1.2s var(--ease); overflow: visible; }
+.pour__stage.is-3d .pour__svg { opacity: 0; }
+.pour__stage::before { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 55% at 35% 45%, rgba(224,162,82,.14), transparent 70%); transition: opacity 1.2s; }
+.pour__stage.is-3d::before { opacity: 0; }
+.pour__veil { position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background:
+    linear-gradient(180deg, var(--oak-900) 0%, rgba(11,8,6,0) 14%, rgba(11,8,6,0) 82%, var(--oak-900) 100%),
+    linear-gradient(90deg, rgba(11,8,6,0) 45%, rgba(11,8,6,.55) 72%, rgba(11,8,6,.7) 100%),
+    radial-gradient(120% 90% at 35% 50%, transparent 55%, rgba(0,0,0,.55) 100%); }
+.pour__poster { display: none; max-width: 520px; margin-bottom: 2rem; }
+html:not(.js) .pour__poster { display: block; }
+.pour__copy { position: relative; z-index: 2; }
+.js .pour__copy { position: absolute; right: var(--gutter); top: 0; bottom: 0; width: min(460px, 38vw); }
+.pour__step { margin-bottom: 4rem; }
+.js .pour__step {
+  position: absolute; left: 0; right: 0; top: 50%; margin: 0;
+  opacity: 0; visibility: hidden; transform: translateY(calc(-50% + 40px));
+  transition: opacity .7s var(--ease), transform 1.1s var(--ease), visibility 0s .7s;
+}
+.js .pour__step.is-past { transform: translateY(calc(-50% - 40px)); }
+.js .pour__step.is-active { opacity: 1; visibility: visible; transform: translateY(-50%); transition: opacity .9s var(--ease) .15s, transform 1.1s var(--ease) .1s, visibility 0s; }
+.pour__step .h1 { margin-bottom: 1.4rem; }
+.pour__title { font-family: var(--font-display); font-weight: 400; line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
+.pour__title em { color: var(--accent); font-weight: 400; }
+.pour__step .lede { color: var(--ivory-300); }
+.pour__step .taps { margin: 1.5rem 0 1.8rem; }
+.pour__hint { display: inline-flex; align-items: center; gap: .8rem; margin-top: 1.5rem; font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: var(--brass-400); }
+.pour__hint i { width: 1px; height: 40px; background: linear-gradient(var(--brass-400), transparent); animation: cue 2.4s var(--ease) infinite; transform-origin: top; }
+.pour__gauge { display: none; }
+.js .pour__gauge { display: flex; position: absolute; z-index: 2; left: var(--gutter); top: 50%; transform: translateY(-50%); flex-direction: column; align-items: center; gap: .9rem; }
+.pour__track { position: relative; width: 1px; height: 180px; background: rgba(207,169,104,.22); overflow: hidden; }
+.pour__track i { position: absolute; inset: 0; background: linear-gradient(0deg, #3b1208, var(--brass-400) 75%, var(--ivory-100)); transform-origin: bottom; transform: scaleY(0); }
+.pour__gauge b { font-family: var(--font-display); font-weight: 400; font-size: 1.5rem; font-variant-numeric: tabular-nums; min-width: 3.2ch; text-align: center; }
+.pour__gauge small { font-size: .56rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ivory-500); writing-mode: vertical-rl; transform: rotate(180deg); }
+.whiskey-band { background: var(--oak-900); }
+.whiskey-band .whiskey-shelf { margin-top: 0; }
+@media (max-width: 900px) and (orientation: portrait), (max-width: 640px) {
+  .js .pour { height: 380vh; }
+  .pour__svg { left: 50%; top: 31%; height: 46%; }
+  .pour__stage::before { background: radial-gradient(70% 45% at 50% 38%, rgba(224,162,82,.16), transparent 70%); }
+  .pour__veil { background:
+    linear-gradient(180deg, var(--oak-900) 0%, rgba(11,8,6,0) 10%, rgba(11,8,6,0) 58%, rgba(11,8,6,.86) 72%, #0b0806 100%),
+    radial-gradient(120% 70% at 50% 31%, transparent 55%, rgba(0,0,0,.45) 100%); }
+  .js .pour__copy { left: var(--gutter); right: var(--gutter); width: auto; top: auto; bottom: calc(76px + env(safe-area-inset-bottom)); height: 32%; }
+  .js .pour__step { top: auto; bottom: 0; transform: translateY(30px); }
+  .js .pour__step.is-past { transform: translateY(-30px); }
+  .js .pour__step.is-active { transform: none; }
+  .pour__step .h1 { font-size: clamp(2.1rem, 9vw, 3rem); margin-bottom: .9rem; }
+  .pour__step .lede { font-size: 1rem; }
+  .pour__step .taps { display: flex; flex-wrap: wrap; gap: .15rem .5rem; margin: .4rem 0 1rem; columns: auto; }
+  .pour__step .taps li { display: inline; padding: 0; border: 0; font-size: 1.1rem; }
+  .pour__step .taps li:not(:last-child)::after { content: "·"; color: var(--accent); margin-left: .5rem; }
+  .pour__step .taps small { display: none; }
+  .js .pour__gauge { left: auto; right: var(--gutter); top: 31%; }
+  .pour__track { height: 120px; }
+  .pour__hint { display: none; }
+}
 
 /* ==========================================================================
    HOME — This week (events)
