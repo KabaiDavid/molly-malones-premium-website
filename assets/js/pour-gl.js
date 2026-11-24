@@ -11,7 +11,7 @@
  * (≈2.6k vertices) so it can tilt, cling to the glass and dome naturally.
  */
 import * as T from "three";
-import { H, WALL, BASE, TOP, FILLET, R, ri, clamp } from "./pour-shape.js";
+import { H, WALL, BASE, TOP, FILLET, R, ri, clamp, composition } from "./pour-shape.js";
 
 const lerp = (a, b, t) => a + (b - a) * t;
 const MAT = 0.028; // beer mat thickness
@@ -20,6 +20,8 @@ const ease = (t) => t * t * (3 - 2 * t);
 export function createGL(stage, { reduce = false } = {}) {
   const canvas = document.createElement("canvas");
   canvas.className = "pour__canvas";
+  // Sized inline as well as in CSS: the canvas can never render at its raw pixel size.
+  canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block";
   const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
   renderer.setClearColor(0x0b0806, 1);
   renderer.toneMapping = T.ACESFilmicToneMapping;
@@ -147,11 +149,11 @@ scene.add(shadow, glow);
   const foam = createFoam(aniso);
 
   /* ------------------------------------------------------------------ lights */
-  const key = new T.SpotLight(0xffb878, 120, 0, 0.36, 1, 2); key.position.set(-4.5, 7.5, 4.5);
-  const rim = new T.SpotLight(0xffd6a0, 140, 0, 0.5, 1, 2); rim.position.set(3.2, 5.5, -5.5);
+  const key = new T.SpotLight(0xffb878, 160, 0, 0.36, 1, 2); key.position.set(-4.5, 7.5, 4.5);
+  const rim = new T.SpotLight(0xffd6a0, 170, 0, 0.5, 1, 2); rim.position.set(3.2, 5.5, -5.5);
   const fill = new T.HemisphereLight(0x3a2618, 0x0b0806, 0.35);
   const front = new T.DirectionalLight(0xfff0dc, 0.9); front.position.set(1.5, 3.2, 10); front.target.position.set(0, 2.4, 0); scene.add(front, front.target);
-  const back = new T.SpotLight(0xff9d52, 900, 0, 0.24, 0.9, 2); back.position.set(0.3, 9, -9.5);
+  const back = new T.SpotLight(0xff9d52, 720, 0, 0.24, 0.9, 2); back.position.set(0.3, 9, -9.5);
   back.target.position.set(0, 0, -1.9); scene.add(back, back.target);
   [key, rim].forEach((l) => { l.target.position.set(0, 2.1, 0); scene.add(l, l.target); });
   scene.add(fill);
@@ -163,22 +165,21 @@ scene.add(shadow, glow);
   shadow.position.y = MAT + 0.002; glow.position.y = MAT + 0.003;
 
   /* ------------------------------------------------------------------ framing */
-  const target = new T.Vector3(0, 1.72, 0);
+  const target = new T.Vector3(0, MAT + H / 2, 0);   // the middle of the glass
+  const ELEV = T.MathUtils.degToRad(12), AZ = -0.06;  // one fixed, slightly elevated hero angle
   let L = { w: 1, h: 1, portrait: false, d: 12, fullW: 1, fullH: 1, x0: 0, y0: 0 };
   function resize() {
     const w = Math.max(1, stage.clientWidth), h = Math.max(1, stage.clientHeight);
     renderer.setSize(w, h, false);
-    const portrait = w / h < 0.9;
-    // Place the glass at (cx, cy) of the viewport using an off-centre projection,
+    // Place the glass at (cx, cy) of the stage using an off-centre projection,
     // so perspective stays natural (no squash) while leaving room for the copy.
-    const cx = portrait ? 0.5 : w < 1100 ? 0.36 : 0.37;
-    const cy = portrait ? (w >= 600 ? 0.37 : 0.32) : 0.49;   // portrait tablets: glass sits lower, closer to the copy
+    const { portrait, cx, cy, frac } = composition(w, h);
     const fullW = w * 2 * Math.max(cx, 1 - cx), fullH = h * 2 * Math.max(cy, 1 - cy);
     const x0 = cx < 0.5 ? fullW - w : 0, y0 = cy < 0.5 ? fullH - h : 0;
     const visH = 2 * Math.tan(T.MathUtils.degToRad(camera.fov / 2)) * (h / fullH);
-    // Glass (3.2 units + mat) framed at ~40% of the viewport height, with room to breathe.
-    let d = 3.3 / ((portrait ? 0.38 : 0.41) * visH);
-    d = Math.max(d, 2.3 / (0.62 * visH * (w / h)));
+    // Projected glass height ≈ H·cos(e) + the rim ellipse; solve the distance for `frac` of the stage.
+    let d = (H * Math.cos(ELEV) + 2 * R(H) * Math.sin(ELEV)) / (frac * visH);
+    d = Math.max(d, 2.4 / (0.6 * visH * (w / h)));   // never wider than 60% of a narrow screen
     L = { w, h, portrait, d, fullW, fullH, x0, y0 };
     scene.fog.near = d * 1.05 + 1.5; scene.fog.far = d * 1.05 + 26;
     camera.aspect = fullW / fullH;
@@ -190,10 +191,9 @@ scene.add(shadow, glow);
   resize();
   stage.prepend(canvas);
 
-  function placeCamera(p) {
-    const e = T.MathUtils.degToRad(lerp(16, 10, ease(p)));     // look into the empty glass, then settle to a hero angle
-    const az = lerp(-0.13, 0.07, p);
-    const d = L.d * lerp(1.05, 0.97, ease(p));                 // gentle push-in
+  // The camera never moves with scroll: a stable product shot. Only the pint changes.
+  function placeCamera() {
+    const e = ELEV, az = AZ, d = L.d;
     camera.position.set(target.x + d * Math.sin(az) * Math.cos(e), target.y + d * Math.sin(e), target.z + d * Math.cos(az) * Math.cos(e));
     camera.lookAt(target);
     // Screen height of the horizon in backdrop units (centre of the full frustum = 0, top = .5).
@@ -206,7 +206,7 @@ scene.add(shadow, glow);
 
   function frame(s, dt, t) {
     if (reduce) t = 0;
-    placeCamera(s.p);
+    placeCamera();
 
     // A damped pendulum driven by how fast the level is moving: the surface leans
     // as you scroll and settles when you stop. Kept small and elegant.
@@ -225,9 +225,6 @@ scene.add(shadow, glow);
 
     glow.material.opacity = Math.min(1, s.fill * 1.1) * 0.55 * s.light * (1 - s.surge * 0.5);
     backU.uLight.value = s.light; backU.uTime.value = t;
-    key.intensity = 70 + 90 * s.light;
-    back.intensity = 420 + 480 * s.light;
-    rim.intensity = 60 + 110 * s.light;
     renderer.render(scene, camera);
   }
 
@@ -240,10 +237,10 @@ scene.add(shadow, glow);
       if (dpr <= 1) return false;
       dpr = 1; renderer.setPixelRatio(1); resize(); return true;
     },
-    compile() { placeCamera(0); renderer.compile(scene, camera); },
+    compile() { placeCamera(); renderer.compile(scene, camera); },
     /** QA: the glass + mat bounding box on screen, as fractions of the viewport. */
     measure() {
-      const box = new T.Box3().setFromObject(pint).union(new T.Box3(new T.Vector3(-1.05, 0, -1.05), new T.Vector3(1.05, MAT, 1.05)));
+      const box = new T.Box3().setFromObject(glass);
       const xs = [], ys = [];
       for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
         const v = new T.Vector3(x, y, z).project(camera); xs.push((v.x + 1) / 2); ys.push((1 - v.y) / 2);

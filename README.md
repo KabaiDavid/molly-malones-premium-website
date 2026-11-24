@@ -37,12 +37,18 @@ assets/js/pour-shape.js  shared glass profile and the scroll → pour timeline
 assets/img/            WebP at 640 / 1280 / 1920 widths
 ```
 
+## Caching (important)
+
+`build.mjs` gives every CSS and JS file a content-hashed name, for example `main.26f054e53f.css`. It also rewrites the HTML and the module imports to match. Because a changed file always gets a new name, `_headers` can safely mark `/assets/css/*` and `/assets/js/*` as `immutable` for a year, and a deploy can never be served with a stale stylesheet. Images keep their names, so they are cached for a week. Never hand-edit files in `dist/`: always run `node build.mjs`.
+
+> An earlier deploy cached unhashed `main.css` as immutable. Browsers that kept that copy rendered the new homepage without the new styles. The canvas showed at its raw pixel size, nothing was pinned, and the no-JS fallback photo appeared. Hashed names make that impossible.
+
 ## Performance notes
 
 - Every image is WebP with `srcset`/`sizes`, explicit dimensions and lazy loading. Only the hero image is preloaded.
-- **The Pour** (homepage, section 03): the stout's level is set directly by scroll position. Pouring starts as the section scrolls into view, before it pins: 10% of the way through the glass is visibly filling, at 25% it is ~30% full, ~55% at 45%, ~80% at 65%, nearly full with the head forming at 80%, and complete by 90%. The whole pour takes about 1.6 screen-heights of scrolling. Scrolling back up drains it. The glass is framed at roughly 40% of the viewport height on every device. The keyframes live in `pourState()` in `assets/js/pour-shape.js`.
+- **The Pour** (homepage, section 03): the stout's level is set directly by scroll position. Progress runs across the pinned part of the section, which is 1.4 screen-heights of scrolling. At 10% the pour begins, and the glass is 30% full at 25%, 50% at 40%, 70% at 55% and 90% at 70%. It is full under a creamy head at 80%, and the final composition then holds. Scrolling back up drains it. The camera is fixed: one framing (`composition()` in `pour-shape.js`), with the glass at about 37% of the viewport height, shared by the WebGL and SVG renderers. The keyframes live in `pourState()` in `assets/js/pour-shape.js`.
   - WebGL scene: transmissive glass with refraction, thickness, dispersion and handling smudges; stout with a tan nitrogen cascade that settles to black and a ruby backlit edge; micro-bubble foam that tilts, clings to the glass and domes; studio softbox reflections; a warm pool of back light on a polished oak bar.
-  - three.js loads only when the section is within ~1200px. It is skipped for Save-Data, 2G, devices with under 3GB of memory, or no WebGL2. It drops to 1× resolution, then to the SVG pint, if the device can't hold ~30fps. It renders only while on screen.
+  - three.js loads only when the section is within ~1200px. It is skipped for Save-Data, 2G, devices with under 3GB of memory, or no WebGL2. If the device can't hold ~30fps, it drops to 1× resolution once. It never swaps renderers or tears down mid-scroll, so the glass never changes. It renders only while on screen.
   - The SVG pint fills from the same timeline. It shows instantly while WebGL loads, and it is the permanent fallback. Add `?pour=2d` to the URL to preview it. `?pour-debug` exposes `window.__pour` (progress and the glass's on-screen bounds) for QA.
   - Reduced motion: the fill still follows scroll, but the slosh, cascade and bokeh flicker are frozen.
 - Google Maps loads only when the visitor asks for it.

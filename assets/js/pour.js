@@ -8,13 +8,14 @@
  *   2. an SVG pint built here — instant, used while WebGL loads and as the
  *      permanent fallback (no WebGL, Save-Data, low memory, or a slow GPU).
  */
-import { H, BASE, R, ri, clamp, pourState } from "./pour-shape.js";
+import { H, BASE, R, ri, clamp, pourState, composition } from "./pour-shape.js";
 
 const section = document.querySelector("[data-pour]");
 if (section) init();
 
 function init() {
   const stage = section.querySelector("[data-pour-stage]");
+  const sticky = section.querySelector(".pour__sticky");
   const steps = [...section.querySelectorAll("[data-step]")];
   const gaugeFill = section.querySelector("[data-pour-gauge]");
   const pct = section.querySelector("[data-pour-pct]");
@@ -26,10 +27,10 @@ function init() {
 
   const read = () => {
     const r = section.getBoundingClientRect();
-    // Start pouring while the section is still sliding in (its top 45% down the screen),
-    // so there's no dead scroll before anything happens.
-    const lead = innerHeight * 0.45, span = r.height - innerHeight + lead;
-    st.target = span > 0 ? clamp((lead - r.top) / span, 0, 1) : 1;
+    // Progress through the pinned part of the section: 0 when the stage pins, 1 when it releases.
+    // Uses the stage's own height (100svh), not innerHeight, so mobile toolbars can't skew it.
+    const span = r.height - sticky.clientHeight;
+    st.target = span > 0 ? clamp(-r.top / span, 0, 1) : 1;
   };
 
   /* ---------------- frame loop: runs only while the section is on screen ---------------- */
@@ -52,7 +53,7 @@ function init() {
   }
 
   function ui(s) {
-    const i = s.p < 0.1 ? 0 : s.p < 0.4 ? 1 : s.p < 0.72 ? 2 : 3;
+    const i = s.p < 0.08 ? 0 : s.p < 0.4 ? 1 : s.p < 0.7 ? 2 : 3;
     if (i !== st.step) {
       st.step = i;
       steps.forEach((el, k) => { el.classList.toggle("is-active", k === i); el.classList.toggle("is-past", k < i); el.toggleAttribute("inert", k !== i); });
@@ -61,21 +62,21 @@ function init() {
     pct.textContent = `${Math.round(s.fill * 100)}%`;
   }
 
-  /* Adaptive quality: if the GPU can't hold ~30fps, drop resolution; if it still can't, fall back to SVG. */
+  /* Adaptive quality: if the GPU can't hold ~30fps, drop to 1x resolution — once.
+     The renderer is never swapped or torn down mid-scroll: the glass must not change. */
   function watchPerf(dt) {
-    if (perf.strikes > 1) return;
+    if (perf.strikes) return;
     perf.n++; perf.sum += dt;
-    if (perf.n < 75) return;
+    if (perf.n < 90) return;
     const avg = perf.sum / perf.n; perf.n = perf.sum = 0;
-    if (avg > 1 / 30) {
-      perf.strikes++;
-      if (!st.gl.lowerQuality() || perf.strikes > 1) { st.gl.dispose(); st.gl = null; stage.classList.remove("is-3d"); }
-    }
+    if (avg > 1 / 30) { perf.strikes = 1; st.gl.lowerQuality(); }
   }
 
   new IntersectionObserver(([e]) => { st.visible = e.isIntersecting; if (st.visible) { read(); kick(); } }, { rootMargin: "100px 0px" }).observe(section);
   addEventListener("scroll", () => { read(); kick(); }, { passive: true });
-  addEventListener("resize", () => { read(); st.gl?.resize(); kick(); });
+  const layout = () => svg.place(stage.clientWidth, stage.clientHeight);
+  addEventListener("resize", () => { read(); layout(); st.gl?.resize(); kick(); });
+  layout();
   read(); st.p = st.target; ui(pourState(st.p)); svg.update(pourState(st.p));
 
   /* ---------------- lazy WebGL ---------------- */
@@ -153,7 +154,15 @@ function buildSvg(svg) {
   const q = (s) => svg.querySelector(s);
   const beer = q("[data-beer]"), surge = q("[data-surge]"), foam = q("[data-foam]"), cap = q("[data-cap]"), glow = q("[data-glow]");
   const set = (el, o) => { for (const k in o) el.setAttribute(k, typeof o[k] === "number" ? o[k].toFixed(2) : o[k]); };
+  // Glass occupies viewBox y ∈ [0, H*S] inside a box that starts at y = -30 and is H*S+70 tall.
+  const vbH = H * S + 70, glassCentre = (H * S / 2 + 30) / vbH;
   return {
+    place(w, h) {
+      if (!w || !h) return;
+      const c = composition(w, h);
+      const hh = (c.frac * h) * (vbH / (H * S)), ww = hh * (220 / vbH);
+      svg.style.cssText = `position:absolute;transform:none;left:${(c.cx * w - ww / 2).toFixed(1)}px;top:${(c.cy * h - glassCentre * hh).toFixed(1)}px;width:${ww.toFixed(1)}px;height:${hh.toFixed(1)}px`;
+    },
     update(s) {
       const show = s.empty ? "none" : "inline";
       [beer, surge, foam, cap].forEach((el) => (el.style.display = show));

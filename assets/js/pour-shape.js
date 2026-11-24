@@ -46,6 +46,18 @@ export function ri(h) {
   return top - FILLET + Math.sqrt(Math.max(0, FILLET * FILLET - dy * dy));
 }
 
+/**
+ * Where the glass sits on screen — shared by the WebGL camera and the SVG pint,
+ * so both renderers frame the glass identically.
+ *   cx, cy  centre of the glass, as fractions of the stage
+ *   frac    glass height (rim to foot) as a fraction of the stage height
+ */
+export function composition(w, h) {
+  const portrait = w / h < 0.9;
+  if (!portrait) return { portrait, cx: w < 1100 ? 0.36 : 0.37, cy: 0.48, frac: 0.37 };
+  return { portrait, cx: 0.5, cy: w >= 600 ? 0.36 : 0.31, frac: 0.36 };
+}
+
 /* Piecewise-linear keyframes. */
 const pw = (pts, x) => {
   if (x <= pts[0][0]) return pts[0][1];
@@ -57,17 +69,17 @@ const pw = (pts, x) => {
 
 /**
  * Scroll progress (0–1) → physical state of the pint.
- *   0%   empty glass          45%  ~55% full
- *   10%  visibly pouring       65%  ~80% full
- *   25%  ~30% full             80%  nearly full, head forming
- *   90–100%  full, settled black under a creamy domed head
+ *   0%  empty            40%  50% full
+ *   10% pour begins      55%  70% full
+ *   25% 30% full         70%  90% full, head forming
+ *   80% full under a creamy head → 100% hold (the stout finishes settling)
  */
 export function pourState(p) {
   p = clamp(p, 0, 1);
-  const fill = pw([[0, 0], [0.025, 0], [0.1, 0.09], [0.25, 0.3], [0.45, 0.55], [0.65, 0.8], [0.8, 0.95], [0.9, 1], [1, 1]], p);
+  const fill = pw([[0, 0], [0.04, 0], [0.1, 0.06], [0.25, 0.3], [0.4, 0.5], [0.55, 0.7], [0.7, 0.9], [0.8, 1], [1, 1]], p);
   const total = BASE + fill * (TOP - BASE);
   // Early in the pour, most of what's in the glass is foam; the head then thickens to ~16mm.
-  let head = pw([[0, 0.03], [0.45, 0.06], [0.65, 0.1], [0.8, 0.2], [0.92, 0.3], [1, 0.31]], p);
+  let head = pw([[0, 0.03], [0.4, 0.06], [0.55, 0.09], [0.7, 0.18], [0.8, 0.3], [1, 0.31]], p);
   head = Math.min(head, (total - BASE) * 0.6);
   return {
     p,
@@ -75,9 +87,9 @@ export function pourState(p) {
     total,                 // top of the foam column
     head,                  // foam thickness
     level: total - head,   // stout / foam interface
-    surge: pw([[0, 0], [0.04, 0.9], [0.4, 1], [0.7, 0.8], [0.93, 0.1], [1, 0.06]], p), // tan cascade → settled black
-    dome: pw([[0, 0], [0.8, 0], [0.94, 0.05]], p),
-    light: pw([[0, 0.62], [0.25, 0.8], [0.9, 1]], p),
+    surge: pw([[0, 0], [0.06, 0.9], [0.4, 1], [0.7, 0.75], [0.88, 0.12], [1, 0.06]], p), // tan cascade → settled black
+    dome: pw([[0, 0], [0.7, 0], [0.82, 0.05]], p),
+    light: 1, // lighting is constant: the composition never changes, only the pint does
     empty: fill <= 0.0008,
   };
 }
