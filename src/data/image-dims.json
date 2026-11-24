@@ -1,0 +1,134 @@
+{
+"bar-interior-dark": {
+"w": 1280,
+"h": 639
+},
+"bluegrass-player": {
+"w": 638,
+"h": 960
+},
+"cov-2nd-floor-dinner": {
+"w": 616,
+"h": 539
+},
+"cov-ballroom": {
+"w": 1280,
+"h": 960
+},
+"cov-bartender": {
+"w": 640,
+"h": 669
+},
+"cov-buffet": {
+"w": 1280,
+"h": 875
+},
+"cov-corner": {
+"w": 640,
+"h": 736
+},
+"cov-hermes-building": {
+"w": 640,
+"h": 790
+},
+"cov-irish-bar": {
+"w": 640,
+"h": 677
+},
+"cov-pub-pool": {
+"w": 1280,
+"h": 960
+},
+"cov-soccer-fans": {
+"w": 640,
+"h": 800
+},
+"cov-street": {
+"w": 1280,
+"h": 559
+},
+"cov-world-cup": {
+"w": 1280,
+"h": 1600
+},
+"fish-chips": {
+"w": 640,
+"h": 768
+},
+"fish-chips-close": {
+"w": 1280,
+"h": 770
+},
+"fish-chips-pint": {
+"w": 600,
+"h": 749
+},
+"house-salad": {
+"w": 505,
+"h": 510
+},
+"irish-breakfast": {
+"w": 1280,
+"h": 899
+},
+"irish-coffee": {
+"w": 512,
+"h": 640
+},
+"key-lime-pie": {
+"w": 1280,
+"h": 1058
+},
+"lou-backbar": {
+"w": 528,
+"h": 530
+},
+"lou-exterior": {
+"w": 1280,
+"h": 639
+},
+"lou-full-irish": {
+"w": 1920,
+"h": 1280
+},
+"lou-garden": {
+"w": 640,
+"h": 800
+},
+"lou-guinness-bar": {
+"w": 640,
+"h": 640
+},
+"lou-guinness-harp": {
+"w": 640,
+"h": 647
+},
+"lou-neon-night": {
+"w": 640,
+"h": 647
+},
+"lou-patio-burger": {
+"w": 640,
+"h": 800
+},
+"mollys-burger": {
+"w": 415,
+"h": 510
+},
+"reuben": {
+"w": 640,
+"h": 478
+},
+"shepherds-pie": {
+"w": 528,
+"h": 530
+},
+"trad-session": {
+"w": 640,
+"h": 647
+},
+"wings": {
+"w": 528,
+"h": 530
+}
+}

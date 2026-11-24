@@ -1,0 +1,229 @@
+{
+  "_howToEdit": "Each location has menus; each menu has sections; each item has name, price (string, as printed), optional desc and tags (v = vegetarian/vegan, sig = house signature). Rebuild with `node build.mjs`.",
+  "covington": {
+    "dinner": { "label": "Dinner", "note": "Kitchen open Mon – Thu until 11pm; Fri & Sat until 1am with our late-night menu.", "sections": [
+      { "name": "Starters", "items": [
+        { "name": "Beef Chili", "price": "Cup 6 / Bowl 12", "desc": "Beef, beans and Guinness, with Yankee cornbread. Add cheddar .75, sour cream .75, onion .50" },
+        { "name": "Potato Skins", "price": "12", "desc": "Bacon, green onion, cheddar, sour cream" },
+        { "name": "Wings", "price": "15", "desc": "1lb jumbo fried wings — buffalo, parmesan garlic, barbecue, Jamaican jerk or spicy garlic" },
+        { "name": "Fried Pickle Chips", "price": "8", "desc": "With spicy chipotle ranch" },
+        { "name": "Chicken Tenders", "price": "12", "desc": "Seasoned fries and whiskey BBQ sauce" },
+        { "name": "Pretzel & Beer Cheese", "price": "12" },
+        { "name": "Spice Bag", "price": "13", "desc": "Fried potatoes, chicken strips, onions, peppers, cajun-chinese spice, curry sauce", "tags": ["sig"] },
+        { "name": "Cheese Cubes", "price": "12", "desc": "White cheddar garlic curds, marinara" }
+      ]},
+      { "name": "Salads", "items": [
+        { "name": "House Salad", "price": "10", "desc": "Field greens, cherry tomatoes, cucumber, goat cheese, pickled onion, balsamic vinaigrette", "tags": ["v"] },
+        { "name": "Classic Caesar", "price": "10", "desc": "Romaine, parmesan, croutons, Tuscan Caesar dressing" },
+        { "name": "Buffalo Chicken", "price": "15", "desc": "Fried or grilled chicken in buffalo sauce on greens, blue cheese, ranch" },
+        { "name": "Add Chicken", "price": "6", "desc": "Fried or grilled" }
+      ]},
+      { "name": "Irish Classics", "items": [
+        { "name": "Fish & Chips", "price": "One 15 / Two 23", "desc": "Beer-battered cod, seasoned fries, coleslaw, tartar sauce", "tags": ["sig"] },
+        { "name": "Bangers & Mash", "price": "15", "tags": ["sig"] },
+        { "name": "Shepherd's Pie", "price": "14", "tags": ["sig"] },
+        { "name": "Irish Breakfast", "price": "17", "desc": "Two eggs, grilled tomato, rasher bacon, banger, white and black pudding, potato cake, beans" },
+        { "name": "Guinness Beef Stew", "price": "17", "desc": "Served with mash" },
+        { "name": "Chicken Pot Pie", "price": "15" },
+        { "name": "Corned Beef & Cabbage", "price": "18" }
+      ]},
+      { "name": "Sandwiches", "note": "Served with Saratoga chips; substitute a side for 3.", "items": [
+        { "name": "Reuben", "price": "16", "desc": "Corned beef, sauerkraut, thousand island, Swiss, toasted rye", "tags": ["sig"] },
+        { "name": "Fish Sandwich", "price": "14", "desc": "Beer-battered cod on toasted rye" },
+        { "name": "Fried Buttermilk Chicken", "price": "14", "desc": "Pickle and Sriracha mayo on a potato bun" },
+        { "name": "Pub Club Wrap", "price": "14", "desc": "Ham, turkey, bacon, Swiss, American, flour tortilla" }
+      ]},
+      { "name": "Burgers", "note": "Saratoga chips; substitute a side for 3. Cooked medium well.", "items": [
+        { "name": "Molly's Burger", "price": "15", "desc": "Irish cheddar, caramelized onion, rasher bacon, whiskey mayo", "tags": ["sig"] },
+        { "name": "Angry Irishman", "price": "14", "desc": "Fried jalapeño, ghost pepper jack, Sriracha mayo" },
+        { "name": "Impossible Burger", "price": "14", "desc": "Plant-based patty", "tags": ["v"] },
+        { "name": "Backyard Burger", "price": "14", "desc": "Cheddar, lettuce, onion, tomato, pickle, mayo" }
+      ]},
+      { "name": "Desserts", "items": [
+        { "name": "Bread Pudding", "price": "7", "desc": "Blueberries, chocolate chips, whiskey sauce" },
+        { "name": "Cast Iron Cookie", "price": "8", "desc": "Toffee and chocolate chip, French vanilla ice cream" },
+        { "name": "Key Lime Pie", "price": "7", "desc": "Fresh cream, lime zest", "tags": ["sig"] }
+      ]}
+    ]},
+    "brunch": { "label": "Brunch", "note": "Saturday & Sunday, 10am – 1pm.", "sections": [
+      { "name": "Signatures", "items": [
+        { "name": "Irish Breakfast", "price": "17", "desc": "Two eggs over easy, rasher, banger, white and black pudding, grilled tomato, baked beans, potato cake", "tags": ["sig"] },
+        { "name": "American Breakfast", "price": "14", "desc": "Two eggs your way, home fries, biscuit and gravy, bacon or goetta" },
+        { "name": "Goetta Grilled Cheese", "price": "14", "desc": "Goetta, over hard egg, American cheese, home fries" },
+        { "name": "Biscuits & Gravy", "price": "10", "desc": "Two buttermilk biscuits, sausage gravy — vegetarian gravy available" },
+        { "name": "Smoked Salmon Bagel", "price": "14", "desc": "Toasted bagel, red onion, tomato, capers, dill cream sauce, side of fruit" }
+      ]},
+      { "name": "Waffles", "items": [
+        { "name": "Berries & Cream", "price": "10", "desc": "Strawberries, blueberries, cream", "tags": ["v"] },
+        { "name": "Country Fried Chicken", "price": "14", "desc": "Tossed in hot sauce, smothered in sausage gravy" }
+      ]},
+      { "name": "Baker's Bowls", "items": [
+        { "name": "Goetta Bowl", "price": "14", "desc": "Home fries, sausage gravy, goetta, peppers, onions, cheddar, two over easy eggs" },
+        { "name": "Southern Bowl", "price": "14", "desc": "Home fries, sausage gravy, sausage, bacon, onion, jalapeños, peppers, cheddar, two over easy eggs" },
+        { "name": "Vegetable Bowl", "price": "14", "desc": "Home fries, vegetarian sausage gravy, mushroom, spinach, onion, tomato, cheddar, two over easy eggs", "tags": ["v"] },
+        { "name": "Fruit Bowl", "price": "8", "desc": "Seasonal fruit, vanilla yogurt, granola, honey, cinnamon sugar", "tags": ["v"] },
+        { "name": "Lucky Charms Bowl", "price": "5", "desc": "Milk over a bowl of charms" }
+      ]},
+      { "name": "Sides", "items": [
+        { "name": "Two Eggs Your Way", "price": "3" }, { "name": "Goetta", "price": "5" }, { "name": "Banger", "price": "4" },
+        { "name": "Bacon", "price": "4" }, { "name": "Baked Beans", "price": "3" }, { "name": "Biscuit & Gravy", "price": "5" },
+        { "name": "Fruit", "price": "4" }, { "name": "Waffle", "price": "5" }, { "name": "Toast", "price": "3" }
+      ]}
+    ]},
+    "latenight": { "label": "Late Night", "note": "Friday & Saturday, 11pm – 1am. Bar open until 2:30am.", "sections": [
+      { "name": "After Eleven", "items": [
+        { "name": "Potato Skins", "price": "12", "desc": "Classic — cheddar, bacon, green onion — or veggie with black bean and corn salsa" },
+        { "name": "Chicken Tenders", "price": "12", "desc": "Whiskey BBQ sauce" },
+        { "name": "Pretzel & Beer Cheese", "price": "12" },
+        { "name": "Spice Bag", "price": "14", "desc": "Cajun-chinese spice, curry sauce", "tags": ["sig"] },
+        { "name": "Curry Fries", "price": "8" },
+        { "name": "Cheese Cubes", "price": "12", "desc": "White cheddar garlic curds, marinara" },
+        { "name": "Key Lime Pie", "price": "7" },
+        { "name": "Cast Iron Cookie", "price": "8" }
+      ]}
+    ]},
+    "drinks": { "label": "Drinks", "note": "Our live draft and spirits list changes often — the full, current list is on BeerMenus.", "sections": [
+      { "name": "Happy Hour", "note": "Monday – Friday, 3pm – 6pm.", "items": [
+        { "name": "Draft Beer & Wine", "price": "$1 off" }, { "name": "Appetizers", "price": "$2 off" }, { "name": "Paddy Irish Whiskey", "price": "3" }
+      ]},
+      { "name": "Irish on Tap", "note": "16oz unless noted.", "items": [
+        { "name": "Guinness Draught", "price": "16oz 7.50 / 20oz 8.50", "tags": ["sig"] },
+        { "name": "Harp Lager", "price": "7" }, { "name": "Smithwick's Pale Ale", "price": "7" },
+        { "name": "Kilkenny Irish Cream Ale", "price": "7" }, { "name": "Magners Irish Cider", "price": "8" },
+        { "name": "Jameson on Draft", "price": "1.25oz 5", "tags": ["sig"] }
+      ]},
+      { "name": "More on Tap", "items": [
+        { "name": "3 Floyds Zombie Dust", "price": "7.50" }, { "name": "Bell's Change of Heart: Erebus", "price": "7" },
+        { "name": "Blue Moon Belgian White", "price": "7" }, { "name": "Bud Light", "price": "5" },
+        { "name": "Carlsberg Pilsner", "price": "8" }, { "name": "Garage Beer Classic Lime", "price": "5.50" },
+        { "name": "MadTree Seeing Colors", "price": "7" }, { "name": "MadTree Thundersnow", "price": "7" },
+        { "name": "Miller High Life", "price": "4" }, { "name": "Miller Lite", "price": "5" },
+        { "name": "Modelo Especial", "price": "6" }, { "name": "New Belgium Voodoo Ranger Juicy Haze IPA", "price": "7" },
+        { "name": "Rhinegeist Cincy Light", "price": "5" }, { "name": "Rhinegeist Holiday Bubbles", "price": "7" },
+        { "name": "Rhinegeist Moose Nitro Chocolate Stout", "price": "7" }, { "name": "Rhinegeist Truth", "price": "7" },
+        { "name": "Sam Adams Winter White Ale", "price": "6.50" }, { "name": "Stella Artois", "price": "6" },
+        { "name": "Yuengling Traditional Lager", "price": "5" }
+      ]},
+      { "name": "Irish Whiskey", "note": "1.25oz pour.", "items": [
+        { "name": "Bushmills Original", "price": "6" }, { "name": "Jameson", "price": "6" }, { "name": "Jameson Orange", "price": "6" },
+        { "name": "Jameson Black Barrel", "price": "8" }, { "name": "Jameson Distiller's Batch", "price": "8" },
+        { "name": "Jameson Triple Triple", "price": "8" }, { "name": "Jameson 18 Year", "price": "40" },
+        { "name": "Green Spot Single Pot Still", "price": "12" }, { "name": "Red Spot 15 Year", "price": "50" },
+        { "name": "Midleton Very Rare 2022", "price": "70", "tags": ["sig"] },
+        { "name": "Paddy Old Irish Whiskey", "price": "6" }, { "name": "Powers Gold", "price": "8" },
+        { "name": "Redbreast 12 Year", "price": "15" }, { "name": "Redbreast 15 Year", "price": "25" },
+        { "name": "Redbreast 18 Year", "price": "60" }, { "name": "Redbreast 21 Year", "price": "80", "tags": ["sig"] },
+        { "name": "Slane Triple Casked", "price": "6" }, { "name": "Teeling Small Batch", "price": "8" },
+        { "name": "Tullamore D.E.W.", "price": "5" }
+      ]},
+      { "name": "Irish Favorites", "items": [
+        { "name": "Irish Coffee", "price": "8", "tags": ["sig"] }, { "name": "Hot Toddy", "price": "8" }, { "name": "Dubliner", "price": "8" },
+        { "name": "Car Bomb", "price": "9" }, { "name": "Chocolate Car Bomb", "price": "10" }, { "name": "Irish Breakfast Shot", "price": "6" },
+        { "name": "Baileys Irish Cream", "price": "6.50" }, { "name": "Baileys Chocolate", "price": "7" },
+        { "name": "Drumshanbo Gunpowder Irish Gin", "price": "8" }, { "name": "Guinness 0.0", "price": "6" }
+      ]},
+      { "name": "Kentucky Bourbon", "note": "A selection — ask your bartender for the full shelf.", "items": [
+        { "name": "Basil Hayden", "price": "13" }, { "name": "Blanton's Single Barrel", "price": "14" },
+        { "name": "Blanton's Straight From The Barrel", "price": "35" }, { "name": "E.H. Taylor Small Batch", "price": "10" },
+        { "name": "E.H. Taylor Single Barrel", "price": "15" }, { "name": "E.H. Taylor Barrel Proof", "price": "40" },
+        { "name": "Isaac Bowman Port Barrel Finished", "price": "7" }, { "name": "Horse Soldier Barrel Strength", "price": "20" },
+        { "name": "King of Kentucky 2025", "price": "70", "tags": ["sig"] }
+      ]},
+      { "name": "Wine & Bubbles", "note": "5oz glass.", "items": [
+        { "name": "Dark Horse Big Red Blend", "price": "6.50" }, { "name": "Geyser Peak Cabernet Sauvignon", "price": "7" },
+        { "name": "Geyser Peak Chardonnay", "price": "7" }, { "name": "Geyser Peak Sauvignon Blanc", "price": "7" },
+        { "name": "Wycliff Brut", "price": "Glass 6.50 / Bottle 25" }
+      ]},
+      { "name": "Bottles & Cans", "items": [
+        { "name": "Bud Light", "price": "4" }, { "name": "Budweiser", "price": "4" }, { "name": "Coors Light", "price": "4" },
+        { "name": "Corona", "price": "5" }, { "name": "Dos Equis", "price": "5.50" }, { "name": "Heineken 0.0", "price": "5" },
+        { "name": "Michelob Ultra", "price": "4.50" }, { "name": "Miller High Life", "price": "3" }, { "name": "Miller Lite", "price": "4" },
+        { "name": "Pabst Blue Ribbon", "price": "3" }, { "name": "Strongbow Dry", "price": "5" },
+        { "name": "High Noon Peach", "price": "6" }, { "name": "High Noon Watermelon", "price": "6" },
+        { "name": "Nütrl Pineapple", "price": "7" }, { "name": "Nütrl Blueberry", "price": "7" },
+        { "name": "Sun Cruiser Vodka Lemonade", "price": "7" }, { "name": "Surfside Arnold Palmer", "price": "7" }
+      ]}
+    ]}
+  },
+  "louisville": {
+    "dinner": { "label": "Dinner", "note": "Served Monday – Sunday from 11am. Kitchen hours vary by day.", "sections": [
+      { "name": "Appetizers", "items": [
+        { "name": "Scotch Egg", "price": "9", "desc": "Pork sausage, hard-boiled egg, salad greens, spicy tomato aioli", "tags": ["sig"] },
+        { "name": "Molly's Wings", "price": "15", "desc": "Jumbo wings and drumsticks — buffalo, sweet chili, whiskey BBQ or dirty bird (buffalo with bleu cheese)" },
+        { "name": "Housemade Beer Cheese", "price": "11", "desc": "With pretzel bites, or celery and carrot sticks" },
+        { "name": "Fried Pickles", "price": "12", "desc": "Beer-battered pickle spears, chipotle ranch" },
+        { "name": "Homemade Queso Dip", "price": "11", "desc": "Tortilla chips" },
+        { "name": "Crispy Brussels Sprouts", "price": "12", "desc": "Chipotle aioli", "tags": ["v"] },
+        { "name": "Chicken Fried Mushrooms", "price": "12", "desc": "Portabella, dill pickle ranch", "tags": ["v"] },
+        { "name": "Spicy Cauliflower Wings", "price": "12", "desc": "Buffalo, BBQ or sweet chili", "tags": ["v"] },
+        { "name": "Roasted Garlic Hummus", "price": "12", "desc": "Pita chips and vegetables", "tags": ["v"] },
+        { "name": "Irish Curry Sauce with Chips", "price": "10" }
+      ]},
+      { "name": "Irish Classics & Entrées", "items": [
+        { "name": "Fish & Chips", "price": "13 / 18", "tags": ["sig"] },
+        { "name": "Bangers & Mash", "price": "16", "desc": "Guinness gravy, caramelized onions", "tags": ["sig"] },
+        { "name": "Shepherd's Pie", "price": "16", "desc": "With your choice of side", "tags": ["sig"] },
+        { "name": "Corned Beef & Cabbage", "price": "18", "desc": "Braised napa cabbage, fingerling potatoes, Irish soda bread" },
+        { "name": "Traditional Irish Breakfast", "price": "18", "desc": "Bangers, rashers, black and white pudding, home fries, eggs, sourdough toast" },
+        { "name": "Blackened Chicken Alfredo", "price": "19", "desc": "Penne, spinach" },
+        { "name": "Grilled Salmon", "price": "23", "desc": "8oz, bourbon teriyaki glaze, toasted almond rice, asparagus" },
+        { "name": "Chicken Tenders Platter", "price": "17", "desc": "Steak fries; ranch, BBQ or honey-mustard" }
+      ]},
+      { "name": "Soups & Salads", "items": [
+        { "name": "Irish Potato Leek Soup", "price": "Cup 5 / Bowl 8", "tags": ["v"] },
+        { "name": "Soup of the Day", "price": "Cup 5 / Bowl 8" },
+        { "name": "Side Caesar", "price": "7" }, { "name": "Molly Caesar", "price": "11" },
+        { "name": "House Salad", "price": "11", "tags": ["v"] },
+        { "name": "Smoked Salmon & Goat Cheese Salad", "price": "19" },
+        { "name": "Shrimp & Avocado Salad", "price": "19" }
+      ]},
+      { "name": "Sandwiches & Burgers", "note": "Served with steak fries and a pickle; some sides carry an upcharge.", "items": [
+        { "name": "Irish Reuben", "price": "16", "desc": "Corned beef, sauerkraut, thousand island, Swiss, toasted rye", "tags": ["sig"] },
+        { "name": "Molly's Old-Fashioned Burger", "price": "15", "tags": ["sig"] },
+        { "name": "Homemade Veggie Burger", "price": "14", "desc": "Add cheese 2, bacon 3", "tags": ["v"] },
+        { "name": "Banger Butty", "price": "15", "desc": "Grilled onions, cheddar, brioche" },
+        { "name": "Buffalo Chicken Tender Sammy", "price": "15", "desc": "Pepperjack" },
+        { "name": "Spicy Chicken Sandwich", "price": "15", "desc": "Grilled or fried" },
+        { "name": "Blackened Tuna Sandwich", "price": "19" }
+      ]},
+      { "name": "Sides", "items": [
+        { "name": "Steak Fries", "price": "5" }, { "name": "Broccoli", "price": "5" }, { "name": "Mashed Potatoes", "price": "5" },
+        { "name": "Toasted Almond Rice", "price": "5" }, { "name": "Asparagus", "price": "6" }, { "name": "Mac n' Cheese", "price": "6" },
+        { "name": "Sweet Potato Fries", "price": "6" }, { "name": "Crispy Brussels Sprouts", "price": "6" }, { "name": "Curly Fries", "price": "6" }
+      ]}
+    ]},
+    "brunch": { "label": "Brunch", "note": "Saturday & Sunday, 11am – 3pm.", "sections": [
+      { "name": "Weekend Brunch", "items": [
+        { "name": "Molly's Famous Full Irish", "price": "15", "desc": "Irish sausage, Irish bacon, black and white pudding, home fries, sautéed tomatoes, two eggs, beans, sourdough", "tags": ["sig"] },
+        { "name": "French Toast", "price": "10", "desc": "Fresh fruit, real maple syrup, whipped cream", "tags": ["v"] },
+        { "name": "Biscuits & Gravy", "price": "10", "desc": "Sausage gravy, cheesy scrambled eggs — vegetarian option available" },
+        { "name": "Mexican Corned Beef Hash", "price": "11", "desc": "Bell peppers, onion, potatoes, corn, sunny side egg, avocado, salsa, sour cream, toast — vegetarian option" },
+        { "name": "Avocado Toast", "price": "11", "desc": "Sourdough, cracked black pepper, sesame seeds, asparagus", "tags": ["v"] },
+        { "name": "Fried Egg Sammy", "price": "10", "desc": "Bacon, two fried eggs, cheese, brioche, home fries" }
+      ]}
+    ]},
+    "vegan": { "label": "Vegan", "note": "A full vegan menu, cooked in a dedicated vegan fryer. Served Monday – Sunday.", "sections": [
+      { "name": "Starters & Salads", "items": [
+        { "name": "Vegan Caesar", "price": "11" },
+        { "name": "Vegan \"Smoked Salmon & Goat Cheese\"", "price": "19", "desc": "Tofu or vegan chicken, vegan cheese" },
+        { "name": "House Salad", "price": "11", "desc": "Vegan cheese, avocado" },
+        { "name": "\"Shrimp & Avocado\"", "price": "19", "desc": "Vegan chicken or tofu" },
+        { "name": "Spicy Cauliflower Wings", "price": "12", "desc": "Buffalo, BBQ or sweet chili" },
+        { "name": "Crispy Brussels Sprouts", "price": "12", "desc": "Chipotle aioli" },
+        { "name": "Fried Pickles", "price": "12" }, { "name": "Chicken Fried Mushrooms", "price": "12" },
+        { "name": "Roasted Garlic Hummus", "price": "12" }
+      ]},
+      { "name": "Vegan Entrées", "items": [
+        { "name": "Vegan Fish & Chips", "price": "13 / 18", "desc": "Beer-battered tofu from our dedicated vegan fryer", "tags": ["sig"] },
+        { "name": "Shepherd's Pie", "price": "16", "desc": "Black beans and vegetables under mashed potatoes", "tags": ["sig"] },
+        { "name": "Irish Reuben", "price": "16", "desc": "Sourdough, sauerkraut, vegan cheese" },
+        { "name": "Veggie Burger", "price": "14", "desc": "Black bean patty, vegan cheese, chipotle ranch" },
+        { "name": "Spicy Vegan Chicken Sandwich", "price": "15" },
+        { "name": "Vegan Chicken / Vegetable Alfredo", "price": "19" },
+        { "name": "Chicken Tenders Platter", "price": "17", "desc": "Vegan chicken tenderloins" },
+        { "name": "Kids Grilled Cheese", "price": "8", "desc": "Sourdough, vegan cheese" }
+      ]}
+    ]},
+    "drinks": { "label": "Drinks", "note": "Guinness, Irish whiskey and a full bar on Baxter Avenue. Ask your bartender for today's taps.", "sections": [] }
+  }
+}

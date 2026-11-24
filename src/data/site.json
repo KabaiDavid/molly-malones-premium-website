@@ -1,0 +1,61 @@
+{
+  "brand": "Molly Malone's",
+  "tagline": "Come as a stranger, leave as a friend.",
+  "siteUrl": "https://mollymalonesirishpub.com",
+  "locations": {
+    "covington": {
+      "slug": "covington",
+      "name": "Covington",
+      "nickname": "The Hermes Building",
+      "since": "Est. 2007",
+      "address": "112 E 4th St",
+      "city": "Covington, KY 41011",
+      "phone": "859.491.6659",
+      "tel": "+18594916659",
+      "email": "info@mollymalonesirishpub.com",
+      "directions": "https://maps.app.goo.gl/MN6aCg42PvArGWiW6",
+      "mapQuery": "Molly Malone's Irish Pub, 112 E 4th St, Covington, KY 41011",
+      "orderOnline": "https://order.toasttab.com/online/molly-malones-irish-pub-covington",
+      "drinksMenu": "https://www.beermenus.com/places/17868-molly-malones-irish-pub-restaurant/qr_menus/639",
+      "giftCards": "https://mollymalonesirishpub.com/covington/gift-cards/",
+      "calendar": "https://mollymalonesirishpub.com/covington/calendar/",
+      "social": {
+        "Instagram": "https://www.instagram.com/mollyscovington/",
+        "Facebook": "https://www.facebook.com/mollymalonescincinnati/",
+        "TikTok": "https://www.tiktok.com/@mollysirishpub"
+      },
+      "bar": { "0": [600, 1590], "1": [660, 1590], "2": [660, 1590], "3": [660, 1590], "4": [660, 1590], "5": [660, 1590], "6": [600, 1590] },
+      "kitchen": { "0": [600, 1380], "1": [660, 1380], "2": [660, 1380], "3": [660, 1380], "4": [660, 1380], "5": [660, 1500], "6": [600, 1500] },
+      "barHours": [["Mon – Fri", "11am – 2:30am"], ["Sat", "10am – 2:30am"], ["Sun", "10am – 2:30am"]],
+      "kitchenHours": [["Mon – Thu", "11am – 11pm"], ["Fri", "11am – 1am"], ["Sat", "10am – 1am"], ["Sun", "10am – 11pm"]],
+      "kitchenNote": "Late night menu after 11pm, Friday & Saturday.",
+      "brunch": "Sat – Sun, 10am – 1pm",
+      "happyHour": "Mon – Fri, 3pm – 6pm"
+    },
+    "louisville": {
+      "slug": "louisville",
+      "name": "Louisville",
+      "nickname": "The Highlands on Baxter",
+      "since": "Baxter Avenue",
+      "address": "933 Baxter Ave",
+      "city": "Louisville, KY",
+      "phone": "502.473.1222",
+      "tel": "+15024731222",
+      "email": "event.mollys@gmail.com",
+      "directions": "https://maps.app.goo.gl/AbYAX2kTjb8GEUds6",
+      "mapQuery": "Molly Malone's Irish Pub, 933 Baxter Ave, Louisville, KY",
+      "calendar": "https://mollymalonesirishpub.com/louisville/calendar-2/",
+      "social": {
+        "Instagram": "https://www.instagram.com/mollyshighlands/",
+        "Facebook": "https://www.facebook.com/MollyMalonesIrishPub/",
+        "X": "https://twitter.com/mollyshighlands"
+      },
+      "bar": { "0": [600, 1440], "1": [660, 1440], "2": [660, 1440], "3": [660, 1440], "4": [660, 1440], "5": [660, 1560], "6": [600, 1560] },
+      "kitchen": { "0": [600, 1320], "1": [660, 1320], "2": [660, 1320], "3": [660, 1320], "4": [660, 1320], "5": [660, 1380], "6": [600, 1320] },
+      "barHours": [["Mon – Thu", "11am – 12am"], ["Fri", "11am – 2am"], ["Sat", "10am – 2am"], ["Sun", "10am – 12am"]],
+      "kitchenHours": [["Mon – Thu", "11am – 10pm"], ["Fri", "11am – 11pm"], ["Sat – Sun", "10am – 10pm"]],
+      "kitchenNote": "Vegan menu served all day, every day.",
+      "brunch": "Sat – Sun, 11am – 3pm"
+    }
+  }
+}
