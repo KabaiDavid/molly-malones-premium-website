@@ -14,6 +14,7 @@ import * as T from "three";
 import { H, WALL, BASE, TOP, FILLET, R, ri, clamp } from "./pour-shape.js";
 
 const lerp = (a, b, t) => a + (b - a) * t;
+const MAT = 0.028; // beer mat thickness
 const ease = (t) => t * t * (3 - 2 * t);
 
 export function createGL(stage, { reduce = false } = {}) {
@@ -77,9 +78,9 @@ export function createGL(stage, { reduce = false } = {}) {
   camera.add(backdrop);
   scene.add(camera);
 
-  /* ------------------------------------------------------------------ bar top */
+  /* ------------------------------------------------------------------ bar top (satin oil finish) */
   const wood = woodTexture(); wood.anisotropy = aniso;
-  const table = new T.Mesh(new T.PlaneGeometry(260, 260), new T.MeshPhysicalMaterial({ map: wood, roughness: 0.34, clearcoat: 0.7, clearcoatRoughness: 0.22, envMapIntensity: 0.45 }));
+  const table = new T.Mesh(new T.PlaneGeometry(260, 260), new T.MeshPhysicalMaterial({ map: wood, roughness: 0.62, specularIntensity: 0.25, clearcoat: 0, envMapIntensity: 0.12 }));
   table.rotation.x = -Math.PI / 2;
   scene.add(table);
 
@@ -150,14 +151,16 @@ scene.add(shadow, glow);
   const rim = new T.SpotLight(0xffd6a0, 140, 0, 0.5, 1, 2); rim.position.set(3.2, 5.5, -5.5);
   const fill = new T.HemisphereLight(0x3a2618, 0x0b0806, 0.35);
   const front = new T.DirectionalLight(0xfff0dc, 0.9); front.position.set(1.5, 3.2, 10); front.target.position.set(0, 2.4, 0); scene.add(front, front.target);
-  const back = new T.SpotLight(0xff9d52, 900, 0, 0.36, 0.95, 2); back.position.set(0.4, 9, -9.5);
-  back.target.position.set(0, 0, -2.4); scene.add(back, back.target);
+  const back = new T.SpotLight(0xff9d52, 900, 0, 0.24, 0.9, 2); back.position.set(0.3, 9, -9.5);
+  back.target.position.set(0, 0, -1.9); scene.add(back, back.target);
   [key, rim].forEach((l) => { l.target.position.set(0, 2.1, 0); scene.add(l, l.target); });
   scene.add(fill);
 
   const pint = new T.Group();
   pint.add(beer, foam.mesh, glass);
-  scene.add(pint);
+  pint.position.y = MAT;
+  scene.add(pint, beerMat_());
+  shadow.position.y = MAT + 0.002; glow.position.y = MAT + 0.003;
 
   /* ------------------------------------------------------------------ framing */
   const target = new T.Vector3(0, 1.72, 0);
@@ -168,13 +171,14 @@ scene.add(shadow, glow);
     const portrait = w / h < 0.9;
     // Place the glass at (cx, cy) of the viewport using an off-centre projection,
     // so perspective stays natural (no squash) while leaving room for the copy.
-    const cx = portrait ? 0.5 : w < 1100 ? 0.37 : 0.35;
-    const cy = portrait ? 0.31 : 0.5;
+    const cx = portrait ? 0.5 : w < 1100 ? 0.36 : 0.37;
+    const cy = portrait ? (w >= 600 ? 0.37 : 0.32) : 0.49;   // portrait tablets: glass sits lower, closer to the copy
     const fullW = w * 2 * Math.max(cx, 1 - cx), fullH = h * 2 * Math.max(cy, 1 - cy);
     const x0 = cx < 0.5 ? fullW - w : 0, y0 = cy < 0.5 ? fullH - h : 0;
     const visH = 2 * Math.tan(T.MathUtils.degToRad(camera.fov / 2)) * (h / fullH);
-    let d = 3.55 / ((portrait ? 0.46 : 0.76) * visH);
-    d = Math.max(d, 1.75 / (0.78 * visH * (w / h)));
+    // Glass (3.2 units + mat) framed at ~40% of the viewport height, with room to breathe.
+    let d = 3.3 / ((portrait ? 0.38 : 0.41) * visH);
+    d = Math.max(d, 2.3 / (0.62 * visH * (w / h)));
     L = { w, h, portrait, d, fullW, fullH, x0, y0 };
     scene.fog.near = d * 1.05 + 1.5; scene.fog.far = d * 1.05 + 26;
     camera.aspect = fullW / fullH;
@@ -187,9 +191,9 @@ scene.add(shadow, glow);
   stage.prepend(canvas);
 
   function placeCamera(p) {
-    const e = T.MathUtils.degToRad(lerp(18, 11, ease(p)));     // look into the empty glass, then settle to a hero angle
+    const e = T.MathUtils.degToRad(lerp(16, 10, ease(p)));     // look into the empty glass, then settle to a hero angle
     const az = lerp(-0.13, 0.07, p);
-    const d = L.d * lerp(1.12, 0.95, ease(p));                 // slow push-in
+    const d = L.d * lerp(1.05, 0.97, ease(p));                 // gentle push-in
     camera.position.set(target.x + d * Math.sin(az) * Math.cos(e), target.y + d * Math.sin(e), target.z + d * Math.cos(az) * Math.cos(e));
     camera.lookAt(target);
     // Screen height of the horizon in backdrop units (centre of the full frustum = 0, top = .5).
@@ -222,7 +226,7 @@ scene.add(shadow, glow);
     glow.material.opacity = Math.min(1, s.fill * 1.1) * 0.55 * s.light * (1 - s.surge * 0.5);
     backU.uLight.value = s.light; backU.uTime.value = t;
     key.intensity = 70 + 90 * s.light;
-    back.intensity = 600 + 600 * s.light;
+    back.intensity = 420 + 480 * s.light;
     rim.intensity = 60 + 110 * s.light;
     renderer.render(scene, camera);
   }
@@ -237,12 +241,38 @@ scene.add(shadow, glow);
       dpr = 1; renderer.setPixelRatio(1); resize(); return true;
     },
     compile() { placeCamera(0); renderer.compile(scene, camera); },
+    /** QA: the glass + mat bounding box on screen, as fractions of the viewport. */
+    measure() {
+      const box = new T.Box3().setFromObject(pint).union(new T.Box3(new T.Vector3(-1.05, 0, -1.05), new T.Vector3(1.05, MAT, 1.05)));
+      const xs = [], ys = [];
+      for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
+        const v = new T.Vector3(x, y, z).project(camera); xs.push((v.x + 1) / 2); ys.push((1 - v.y) / 2);
+      }
+      return { left: Math.min(...xs), right: Math.max(...xs), top: Math.min(...ys), bottom: Math.max(...ys) };
+    },
     dispose() {
       scene.traverse((o) => { o.geometry?.dispose(); [].concat(o.material || []).forEach((m) => { Object.values(m).forEach((v) => v?.isTexture && v.dispose()); m.dispose(); }); });
       scene.environment?.dispose();
       renderer.dispose(); renderer.forceContextLoss(); canvas.remove();
     },
   };
+}
+
+/* A round pressed-board beer mat: dark, slightly fibrous, with a fine brass keyline. */
+function beerMat_() {
+  const g = new T.Group();
+  const tex = canvasTex(512, 512, (c, w, h) => {
+    c.fillStyle = "#16100b"; c.fillRect(0, 0, w, h);
+    for (let i = 0; i < 9000; i++) { c.fillStyle = `rgba(${Math.random() < .5 ? "60,42,28" : "0,0,0"},${Math.random() * .18})`; c.fillRect(Math.random() * w, Math.random() * h, 1 + Math.random() * 2, 1); }
+    c.strokeStyle = "rgba(207,169,104,.55)"; c.lineWidth = 3; c.beginPath(); c.arc(w / 2, h / 2, w * 0.455, 0, Math.PI * 2); c.stroke();
+    c.lineWidth = 1; c.beginPath(); c.arc(w / 2, h / 2, w * 0.43, 0, Math.PI * 2); c.stroke();
+  }, { srgb: true, repeat: false });
+  const top = new T.Mesh(new T.CircleGeometry(1.05, 96), new T.MeshStandardMaterial({ map: tex, roughness: 0.92, metalness: 0 }));
+  top.rotation.x = -Math.PI / 2; top.position.y = MAT;
+  const edge = new T.Mesh(new T.CylinderGeometry(1.05, 1.05, MAT, 96, 1, true), new T.MeshStandardMaterial({ color: 0x0d0906, roughness: 0.9 }));
+  edge.position.y = MAT / 2;
+  g.add(top, edge);
+  return g;
 }
 
 /* ======================================================================= geometry */

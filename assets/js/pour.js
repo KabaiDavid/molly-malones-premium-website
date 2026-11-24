@@ -22,11 +22,14 @@ function init() {
   const svg = buildSvg(stage.querySelector("[data-pour-svg]"));
 
   const st = { target: 0, p: 0, visible: false, gl: null, step: -1 };
+  if (/[?&]pour-debug\b/.test(location.search)) window.__pour = st;   // QA hook
 
   const read = () => {
     const r = section.getBoundingClientRect();
-    const span = r.height - innerHeight;
-    st.target = span > 0 ? clamp(-r.top / span, 0, 1) : 1;
+    // Start pouring while the section is still sliding in (its top 45% down the screen),
+    // so there's no dead scroll before anything happens.
+    const lead = innerHeight * 0.45, span = r.height - innerHeight + lead;
+    st.target = span > 0 ? clamp((lead - r.top) / span, 0, 1) : 1;
   };
 
   /* ---------------- frame loop: runs only while the section is on screen ---------------- */
@@ -49,7 +52,7 @@ function init() {
   }
 
   function ui(s) {
-    const i = s.p < 0.2 ? 0 : s.p < 0.5 ? 1 : s.p < 0.8 ? 2 : 3;
+    const i = s.p < 0.1 ? 0 : s.p < 0.4 ? 1 : s.p < 0.72 ? 2 : 3;
     if (i !== st.step) {
       st.step = i;
       steps.forEach((el, k) => { el.classList.toggle("is-active", k === i); el.classList.toggle("is-past", k < i); el.toggleAttribute("inert", k !== i); });

@@ -379,26 +379,26 @@ body.menu-open { overflow: hidden; }
    HOME — The Pour (scroll-linked stout fill)
    ========================================================================== */
 .pour { position: relative; background: #0b0806; color: var(--ivory-100); }
-.js .pour { height: 440vh; }
+.js .pour { height: 235vh; }
 .pour__sticky { position: relative; padding: 6rem var(--gutter); }
 .js .pour__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; padding: 0; }
 .pour__stage { position: absolute; inset: 0; display: none; }
 .js .pour__stage { display: block; }
 .pour__canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; opacity: 0; transition: opacity 1.4s var(--ease); }
 .pour__stage.is-3d .pour__canvas { opacity: 1; }
-.pour__svg { position: absolute; left: 35%; top: 50%; height: 80%; width: auto; aspect-ratio: 220 / 390; transform: translate(-50%, -50%); transition: opacity 1.2s var(--ease); overflow: visible; }
+.pour__svg { position: absolute; left: 37%; top: 49%; height: 50%; width: auto; aspect-ratio: 220 / 390; transform: translate(-50%, -50%); transition: opacity 1.2s var(--ease); overflow: visible; }
 .pour__stage.is-3d .pour__svg { opacity: 0; }
-.pour__stage::before { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 55% at 35% 45%, rgba(224,162,82,.14), transparent 70%); transition: opacity 1.2s; }
+.pour__stage::before { content: ""; position: absolute; inset: 0; background: radial-gradient(40% 45% at 37% 50%, rgba(224,162,82,.14), transparent 70%); transition: opacity 1.2s; }
 .pour__stage.is-3d::before { opacity: 0; }
 .pour__veil { position: absolute; inset: 0; pointer-events: none; z-index: 1;
   background:
     linear-gradient(180deg, var(--oak-900) 0%, rgba(11,8,6,0) 14%, rgba(11,8,6,0) 82%, var(--oak-900) 100%),
     linear-gradient(90deg, rgba(11,8,6,0) 45%, rgba(11,8,6,.55) 72%, rgba(11,8,6,.7) 100%),
-    radial-gradient(120% 90% at 35% 50%, transparent 55%, rgba(0,0,0,.55) 100%); }
+    radial-gradient(120% 90% at 37% 51%, transparent 55%, rgba(0,0,0,.5) 100%); }
 .pour__poster { display: none; max-width: 520px; margin-bottom: 2rem; }
 html:not(.js) .pour__poster { display: block; }
 .pour__copy { position: relative; z-index: 2; }
-.js .pour__copy { position: absolute; right: var(--gutter); top: 0; bottom: 0; width: min(460px, 38vw); }
+.js .pour__copy { position: absolute; left: 56%; top: 0; bottom: 0; width: min(440px, 36vw); }
 .pour__step { margin-bottom: 4rem; }
 .js .pour__step {
   position: absolute; left: 0; right: 0; top: 50%; margin: 0;
@@ -423,12 +423,12 @@ html:not(.js) .pour__poster { display: block; }
 .whiskey-band { background: var(--oak-900); }
 .whiskey-band .whiskey-shelf { margin-top: 0; }
 @media (max-width: 900px) and (orientation: portrait), (max-width: 640px) {
-  .js .pour { height: 380vh; }
-  .pour__svg { left: 50%; top: 31%; height: 46%; }
+  .js .pour { height: 225vh; }
+  .pour__svg { left: 50%; top: 32%; height: 47%; }
   .pour__stage::before { background: radial-gradient(70% 45% at 50% 38%, rgba(224,162,82,.16), transparent 70%); }
   .pour__veil { background:
     linear-gradient(180deg, var(--oak-900) 0%, rgba(11,8,6,0) 10%, rgba(11,8,6,0) 58%, rgba(11,8,6,.86) 72%, #0b0806 100%),
-    radial-gradient(120% 70% at 50% 31%, transparent 55%, rgba(0,0,0,.45) 100%); }
+    radial-gradient(120% 70% at 50% 32%, transparent 55%, rgba(0,0,0,.45) 100%); }
   .js .pour__copy { left: var(--gutter); right: var(--gutter); width: auto; top: auto; bottom: calc(76px + env(safe-area-inset-bottom)); height: 32%; }
   .js .pour__step { top: auto; bottom: 0; transform: translateY(30px); }
   .js .pour__step.is-past { transform: translateY(-30px); }
@@ -439,9 +439,18 @@ html:not(.js) .pour__poster { display: block; }
   .pour__step .taps li { display: inline; padding: 0; border: 0; font-size: 1.1rem; }
   .pour__step .taps li:not(:last-child)::after { content: "·"; color: var(--accent); margin-left: .5rem; }
   .pour__step .taps small { display: none; }
-  .js .pour__gauge { left: auto; right: var(--gutter); top: 31%; }
+  .js .pour__gauge { left: auto; right: var(--gutter); top: 32%; }
   .pour__track { height: 120px; }
   .pour__hint { display: none; }
+}
+
+@media (min-width: 600px) and (max-width: 900px) and (orientation: portrait) {
+  .pour__svg { top: 37%; }
+  .js .pour__gauge { top: 37%; }
+  .js .pour__copy { left: 12%; right: 12%; bottom: calc(9% + env(safe-area-inset-bottom)); height: 30%; }
+  .pour__veil { background:
+    linear-gradient(180deg, var(--oak-900) 0%, rgba(11,8,6,0) 10%, rgba(11,8,6,0) 62%, rgba(11,8,6,.8) 74%, #0b0806 100%),
+    radial-gradient(120% 70% at 50% 37%, transparent 55%, rgba(0,0,0,.45) 100%); }
 }
 
 /* ==========================================================================

@@ -57,18 +57,17 @@ const pw = (pts, x) => {
 
 /**
  * Scroll progress (0–1) → physical state of the pint.
- *   0%   empty glass
- *   25%  the pour begins
- *   50%  half full, surging tan
- *   75%  nearly full, the head developing
- *   100% full, settled black under a creamy domed head
+ *   0%   empty glass          45%  ~55% full
+ *   10%  visibly pouring       65%  ~80% full
+ *   25%  ~30% full             80%  nearly full, head forming
+ *   90–100%  full, settled black under a creamy domed head
  */
 export function pourState(p) {
   p = clamp(p, 0, 1);
-  const fill = pw([[0, 0], [0.22, 0], [0.5, 0.5], [0.75, 0.88], [0.94, 1], [1, 1]], p);
+  const fill = pw([[0, 0], [0.025, 0], [0.1, 0.09], [0.25, 0.3], [0.45, 0.55], [0.65, 0.8], [0.8, 0.95], [0.9, 1], [1, 1]], p);
   const total = BASE + fill * (TOP - BASE);
   // Early in the pour, most of what's in the glass is foam; the head then thickens to ~16mm.
-  let head = pw([[0, 0.03], [0.5, 0.06], [0.75, 0.13], [0.94, 0.3], [1, 0.31]], p);
+  let head = pw([[0, 0.03], [0.45, 0.06], [0.65, 0.1], [0.8, 0.2], [0.92, 0.3], [1, 0.31]], p);
   head = Math.min(head, (total - BASE) * 0.6);
   return {
     p,
@@ -76,9 +75,9 @@ export function pourState(p) {
     total,                 // top of the foam column
     head,                  // foam thickness
     level: total - head,   // stout / foam interface
-    surge: pw([[0, 0], [0.22, 0.9], [0.5, 1], [0.8, 0.8], [0.97, 0.1], [1, 0.06]], p), // tan cascade → settled black
-    dome: pw([[0, 0], [0.86, 0], [1, 0.05]], p),
-    light: pw([[0, 0.62], [0.3, 0.78], [1, 1]], p),
+    surge: pw([[0, 0], [0.04, 0.9], [0.4, 1], [0.7, 0.8], [0.93, 0.1], [1, 0.06]], p), // tan cascade → settled black
+    dome: pw([[0, 0], [0.8, 0], [0.94, 0.05]], p),
+    light: pw([[0, 0.62], [0.25, 0.8], [0.9, 1]], p),
     empty: fill <= 0.0008,
   };
 }
